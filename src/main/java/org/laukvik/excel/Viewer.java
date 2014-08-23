@@ -1,6 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 Laukviks Bedrifter.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.laukvik.excel;
 
@@ -22,34 +33,35 @@ import org.apache.poi.ss.usermodel.Sheet;
  * @author morten
  */
 public class Viewer extends javax.swing.JFrame {
+
     private static final Logger LOG = Logger.getLogger(Viewer.class.getName());
 
     Reader r;
     List<SheetViewer> viewers;
-    
+
     /**
      * Creates new form Viewer
      */
     public Viewer() {
         initComponents();
-        setSize( 800, 600 );
+        setSize(800, 600);
         viewers = new ArrayList<SheetViewer>();
-        setLocationRelativeTo( null );
+        setLocationRelativeTo(null);
     }
-    
-    public void openFile( File file ) throws FileNotFoundException{
+
+    public void openFile(File file) throws FileNotFoundException {
         r = new Reader();
-        r.open( file );
-        setTitle( file.getAbsolutePath() );
+        r.open(file);
+        setTitle(file.getAbsolutePath());
         jTabbedPane1.removeAll();
         viewers.clear();
 
         int max = r.getWorkbook().getNumberOfSheets();
-        for (int x=0; x<max; x++){
-            Sheet sheet = r.getWorkbook().getSheetAt( x );
+        for (int x = 0; x < max; x++) {
+            Sheet sheet = r.getWorkbook().getSheetAt(x);
             SheetViewer viewer = new SheetViewer(sheet);
-            viewers.add( viewer );
-            jTabbedPane1.add( new JScrollPane(viewer) );
+            viewers.add(viewer);
+            jTabbedPane1.add(new JScrollPane(viewer));
             jTabbedPane1.setTitleAt(0, sheet.getSheetName());
         }
     }
@@ -190,7 +202,7 @@ public class Viewer extends javax.swing.JFrame {
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // TODO add your handling code here:
         JFileChooser fc = new JFileChooser();
-        fc.setFileFilter( new ExcelFileFilter() ); 
+        fc.setFileFilter(new ExcelFileFilter());
         int returnVal = fc.showOpenDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -208,36 +220,35 @@ public class Viewer extends javax.swing.JFrame {
     }//GEN-LAST:event_openMenuItemActionPerformed
 
 //    public enum SearchPattern{
-//        
+//
 //        LINEFEED, CARRIAGERETURN, TAB
-//        
+//
 //        private SearchPattern( String value ){
 //        }
-//        
+//
 //    };
-    
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         StringBuilder b = new StringBuilder();
         int sheetIndex = 0;
-        LOG.log( Level.FINE, "Searching in {0} sheets", viewers.size());
-        
-        String [] search = { "\n", "\r", "\t" };
-        String [] searchExp = { "Linefeed", "Carriage return", "Tab" };
-        
-        for (SheetViewer v : viewers){
+        LOG.log(Level.FINE, "Searching in {0} sheets", viewers.size());
+
+        String[] search = {"\n", "\r", "\t"};
+        String[] searchExp = {"Linefeed", "Carriage return", "Tab"};
+
+        for (SheetViewer v : viewers) {
             int rows = v.model.getRowCount();
-            int columns  = v.model.getColumnCount();
-            LOG.log( Level.FINE, "Searching in sheet:{0} Rows: {1}", new Object[]{sheetIndex, rows});
-            for (int y=0; y<rows; y++){
-                for (int x=0; x<columns; x++){
-                    String value = (String) v.model.getValueAt( y, x );
+            int columns = v.model.getColumnCount();
+            LOG.log(Level.FINE, "Searching in sheet:{0} Rows: {1}", new Object[]{sheetIndex, rows});
+            for (int y = 0; y < rows; y++) {
+                for (int x = 0; x < columns; x++) {
+                    String value = (String) v.model.getValueAt(y, x);
                     int searchKeywordIndex = 0;
-                    for (String s : search){
-                        int index = value.indexOf( s );
-                        if (index > -1){
-                            String desc =  "Found " + (searchExp[ searchKeywordIndex ]) + " in cell " +(x+1) + "/" + (y+2) + " at character position " + (index+1) + ". Contents: " + value;
-                            LOG.fine( desc );
-                            b.append( desc );
+                    for (String s : search) {
+                        int index = value.indexOf(s);
+                        if (index > -1) {
+                            String desc = "Found " + (searchExp[ searchKeywordIndex]) + " in cell " + (x + 1) + "/" + (y + 2) + " at character position " + (index + 1) + ". Contents: " + value;
+                            LOG.fine(desc);
+                            b.append(desc);
                         }
                         searchKeywordIndex++;
                     }
@@ -245,18 +256,16 @@ public class Viewer extends javax.swing.JFrame {
             }
             sheetIndex++;
         }
-        LOG.fine( "Done searching!" );
-        
+        LOG.fine("Done searching!");
+
         String results = b.toString();
-        
-        if (results.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Didnt find any search pattern", "Search results", JOptionPane.INFORMATION_MESSAGE );
+
+        if (results.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Didnt find any search pattern", "Search results", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this, results, "Search results", JOptionPane.INFORMATION_MESSAGE );
+            JOptionPane.showMessageDialog(this, results, "Search results", JOptionPane.INFORMATION_MESSAGE);
         }
-        
-        
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -269,12 +278,12 @@ public class Viewer extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         System.setProperty("apple.laf.useScreenMenuBar", "true");
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 Viewer v = new Viewer();
-                v.setVisible( true );
+                v.setVisible(true);
 
             }
         });

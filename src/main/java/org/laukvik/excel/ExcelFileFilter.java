@@ -22,16 +22,15 @@ public class ExcelFileFilter extends javax.swing.filechooser.FileFilter implemen
     public ExcelFileFilter() {
     }
 
-    
     @Override
     public boolean accept(File f) {
-        if (f == null){
+        if (f == null) {
             return false;
-        } else if (!f.isFile()){
+        } else if (!f.isFile()) {
             return false;
         } else {
             String filenameLower = f.getName().toLowerCase();
-            if (filenameLower.endsWith(".xls")||filenameLower.endsWith(".xlsx")){
+            if (filenameLower.endsWith(".xls") || filenameLower.endsWith(".xlsx")) {
                 return true;
             } else {
                 return false;

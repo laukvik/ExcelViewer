@@ -1,6 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2013 Laukviks Bedrifter.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.laukvik.excel;
 
@@ -19,19 +30,19 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author morten
  */
 public class Reader {
-    
+
     private static final Logger LOG = Logger.getLogger(Reader.class.getName());
-    
+
     File file;
     private Workbook wb;
     private InputStream inp;
 
     public Reader() {
     }
-    
-    public void open( File excelFile ) throws FileNotFoundException{
+
+    public void open(File excelFile) throws FileNotFoundException {
         this.file = excelFile;
-        this.inp = new FileInputStream( excelFile );
+        this.inp = new FileInputStream(excelFile);
         try {
             LOG.fine("Trying to parse .XLSX file...");
             wb = new XSSFWorkbook(inp);
@@ -50,9 +61,9 @@ public class Reader {
             }
         }
     }
-    
-    public Workbook getWorkbook(){
+
+    public Workbook getWorkbook() {
         return wb;
     }
-    
+
 }
